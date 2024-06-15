@@ -18,7 +18,7 @@ import {
   Grid,
   Snackbar,
 } from "@mui/material";
-import { CenterFocusStrong, Delete, Edit } from "@mui/icons-material";
+import {  Delete, Edit } from "@mui/icons-material";
 import { database, ref, set, push, get, update, remove } from "./firebase";
 import MuiAlert from '@mui/material/Alert';
 import { styled } from '@mui/material/styles';  // Use MUI v5 styling
@@ -88,6 +88,13 @@ const MenuManagement = () => {
   };
 
   const handleSubmit = async () => {
+    // Check if all fields have values
+    if (!item.category || !item.name || !item.options || !item.price || !item.cost || !item.amountInStock) {
+      setSnackbarMessage("Please fill in all fields before submitting");
+      setSnackbarSeverity("warning");
+      setSnackbarOpen(true);
+      return;
+    }
     if (isEdit) {
       const itemRef = ref(database, `menuItems/${currentId}`);
       await update(itemRef, item);
